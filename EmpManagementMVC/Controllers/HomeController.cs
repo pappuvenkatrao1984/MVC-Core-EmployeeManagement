@@ -147,5 +147,11 @@ namespace EmpManagementMVC.Controllers
             _employeeRepository.Update(emp);
             return RedirectToAction("Index");
         }
+
+        public IActionResult Delete(int id)
+        {
+            var emp = _employeeRepository.Delete(id);
+            return RedirectToAction("Index");
+        }
     }
 }

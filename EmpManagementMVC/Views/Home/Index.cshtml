@@ -10,20 +10,24 @@
     </title>
 </head>
 <body>
+    <a asp-controller="home" asp-action="Create" class="btn btn-primary">Create</a>
+
     @foreach (Employee emp in Model)
     {
+        var photoPath = "~/images/" + (emp.PhotoPath ?? "925004353s.jpg");
         <div class="card m-3">
             <div class="card-header">
                 <h3>@emp.Name</h3>
             </div>
-            <img class="card-img-top" src="~/images/-78145_8777.jpg" width="100" height="100"/>
+
+            <img class="card-img-top" src="@photoPath" asp-append-version="true" width="100" height="100" />
             <div class="card-footer text-center">
-                <a asp-controller="home" asp-action="details" asp-route-id="@emp.Id" class="btn btn-primary">View</a>              
-                <a href="#" class="btn btn-warning">Edit</a>
+                <a asp-controller="home" asp-action="details" asp-route-id="@emp.Id" class="btn btn-primary">View</a>
+                <a asp-controller="home" asp-action="edit" asp-route-id="@emp.Id" class="btn btn-warning">Edit</a>
                 <a href="#" class="btn btn-danger">Delete</a>
                 <a href="#" class="btn btn-warning">Back</a>
             </div>
         </div>
-    }   
+    }
 </body>
 </html>

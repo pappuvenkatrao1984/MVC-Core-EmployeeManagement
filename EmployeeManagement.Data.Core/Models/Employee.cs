@@ -18,5 +18,6 @@ namespace EmployeeManagement.Data.Core
         [Required]
         public string Email { get; set; }
         public string PhotoPath { get; set; }
+        public bool IsActive { get; set; }
     }
 }

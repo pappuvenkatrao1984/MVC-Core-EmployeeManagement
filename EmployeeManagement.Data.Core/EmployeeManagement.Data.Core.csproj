@@ -57,5 +57,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLEmployeeRepository.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EmpManagement\EmpManagement.csproj">
+      <Project>{5ea48a33-4daa-462d-866d-66a4ea329814}</Project>
+      <Name>EmpManagement</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

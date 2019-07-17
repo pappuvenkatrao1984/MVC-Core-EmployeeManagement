@@ -6,6 +6,7 @@ using EmployeeManagement.Data.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,9 @@ namespace EmpManagementMVC
             services.AddMvc().AddXmlSerializerFormatters();
             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
+            services.BuildServiceProvider().GetService<EmployeeAppDataCore>().Database.Migrate();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<EmployeeAppDataCore>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

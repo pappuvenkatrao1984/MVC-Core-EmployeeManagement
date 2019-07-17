@@ -57,7 +57,7 @@ namespace EmpManagementMVC.Controllers
                         // The image must be uploaded to the images folder in wwwroot
                         // To get the path of the wwwroot folder we are using the inject
                         // HostingEnvironment service provided by ASP.NET Core
-                        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                        string uploadsFolder = Path.Combine("images");
 
                         // To make sure the file name is unique we are appending a new
                         // GUID value and and an underscore to the file name
@@ -145,7 +145,7 @@ namespace EmpManagementMVC.Controllers
             string uniqueFileName = null;
             if (employeeViewModel.Photo != null)
             {
-                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                string uploadsFolder = Path.Combine("images");
                 // To make sure the file name is unique we are appending a new
                 // GUID value and and an underscore to the file name
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + employeeViewModel.Photo.FileName;

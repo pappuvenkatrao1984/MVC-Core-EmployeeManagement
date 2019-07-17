@@ -65,6 +65,10 @@ namespace EmpManagementMVC.Controllers
                         string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                         // Use CopyTo() method provided by IFormFile interface to
                         // copy the file to wwwroot/images folder
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
                         employee.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
                     }
 

@@ -8,6 +8,7 @@ using EmpManagementMVC.ViewModels;
 using EmployeeManagement.Data.Core;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace EmpManagementMVC.Controllers
 {
@@ -15,10 +16,12 @@ namespace EmpManagementMVC.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IHostingEnvironment hostingEnvironment;
-        public HomeController(IEmployeeRepository repository, IHostingEnvironment hostingEnvironment)
+        private readonly ILogger<HomeController> logger;
+        public HomeController(IEmployeeRepository repository, IHostingEnvironment hostingEnvironment, ILogger<HomeController> ilogger)
         {
             _employeeRepository = repository;
             this.hostingEnvironment = hostingEnvironment;
+            this.logger = ilogger;
         }
         public IActionResult Index()
         {
@@ -41,39 +44,49 @@ namespace EmpManagementMVC.Controllers
         [HttpPost]
         public IActionResult Create(CreateViewModel employee)
         {
-            if (ModelState.IsValid)
+            try
             {
-                string uniqueFileName = null;
-
-                // If the Photo property on the incoming model object is not null, then the user
-                // has selected an image to upload.
-                if (employee.Photo != null)
+                if (ModelState.IsValid)
                 {
-                    // The image must be uploaded to the images folder in wwwroot
-                    // To get the path of the wwwroot folder we are using the inject
-                    // HostingEnvironment service provided by ASP.NET Core
-                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-                    // To make sure the file name is unique we are appending a new
-                    // GUID value and and an underscore to the file name
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + employee.Photo.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    // Use CopyTo() method provided by IFormFile interface to
-                    // copy the file to wwwroot/images folder
-                    employee.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    string uniqueFileName = null;
+
+                    // If the Photo property on the incoming model object is not null, then the user
+                    // has selected an image to upload.
+                    if (employee.Photo != null)
+                    {
+                        // The image must be uploaded to the images folder in wwwroot
+                        // To get the path of the wwwroot folder we are using the inject
+                        // HostingEnvironment service provided by ASP.NET Core
+                        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+
+                        // To make sure the file name is unique we are appending a new
+                        // GUID value and and an underscore to the file name
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + employee.Photo.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        // Use CopyTo() method provided by IFormFile interface to
+                        // copy the file to wwwroot/images folder
+                        employee.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    }
+
+
+                    var emp = new Employee()
+                    {
+                        Email = employee.Email,
+                        Department = employee.Department.ToString(),
+                        Name = employee.Name,
+                        PhotoPath = uniqueFileName
+                    };
+                    var res = _employeeRepository.Add(emp);
+                    return RedirectToAction("Index");
                 }
-
-
-                var emp = new Employee()
-                {
-                    Email = employee.Email,
-                    Department = employee.Department.ToString(),
-                    Name = employee.Name,
-                    PhotoPath = uniqueFileName
-                };
-                var res = _employeeRepository.Add(emp);
-                return RedirectToAction("Index");
+                return View();
             }
-            return View();
+            catch(Exception ex)
+            {
+                this.logger.LogError(ex.Message);
+                return RedirectToAction("Error", "Error");
+            }
+            
         }
 
 

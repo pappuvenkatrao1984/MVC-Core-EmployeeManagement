@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EmpManagementMVC.ViewModels;
-using EmployeeManagement.Data.Core;
+using EmployeeManagement.DataAccess.Core;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;

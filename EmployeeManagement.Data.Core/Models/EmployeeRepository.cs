@@ -49,5 +49,10 @@ namespace EmployeeManagement.DataAccess.Core
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

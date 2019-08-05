@@ -55,5 +55,11 @@ namespace EmployeeManagement.DataAccess.Core
         {
             return context.Employees.ToList();
         }
+
+        public void DeleteAll()
+        {
+            context.Employees.RemoveRange(context.Employees);
+            context.SaveChanges();
+        }
     }
 }

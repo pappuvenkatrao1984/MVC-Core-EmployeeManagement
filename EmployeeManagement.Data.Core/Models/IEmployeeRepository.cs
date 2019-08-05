@@ -13,5 +13,6 @@ namespace EmployeeManagement.DataAccess.Core
         Employee Update(Employee employeeChanges);
         Employee GetEmployee(int id);
         IEnumerable<Employee> GetAllEmployees();
+        void DeleteAll();
     }
 }
